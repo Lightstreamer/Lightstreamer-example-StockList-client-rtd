@@ -1,6 +1,6 @@
 # Lightstreamer StockList Demo Client for Real-Time Data (RTD) #
 
-This project includes a demo project showing integration between Lightstreamer .NET/C# Client and RTD Server for Excel.
+This project includes a demo client showing integration between Lightstreamer .NET/C# Client and RTD Server for Excel.
 
 ## Excel RTD Stock-List Demo ##
 
@@ -52,7 +52,7 @@ For more information regarding Visual C# 2010 Express and how to run it, please 
   
 <i>NOTE: You may also use the sources included in this project with another Microsoft IDE or without any IDE but such approach is not covered in this readme.</i>
 
-You just need to create a Visual Studio project for a Class library (DLL) target, then include the sources and properties files and include references to the Microsoft.Office.Interop.Excel1 and Lightstreamer.NET Client API (for Lightstreamer binaries files DotNetClient_N2.dll and DotNetClient_N2.pdb) from the [latest Lightstreamer distribution](http://www.lightstreamer.com/download). After the compilation of your DLL, you need to run RegAsm.exe tool in order to register it against COM. RegAsm.exe is part of the .NET SDK and just generates some Registry entries, like the ones in the example RTDServiceRegistrationExample.reg file.
+You just need to create a Visual Studio project for a Class library (DLL) target, then include the sources and properties files and include references to the Microsoft.Office.Interop.Excel and Lightstreamer.NET Client API (for Lightstreamer binaries files DotNetClient_N2.dll and DotNetClient_N2.pdb) from the [latest Lightstreamer distribution](http://www.lightstreamer.com/download). After the compilation of your DLL, you need to run RegAsm.exe tool in order to register it against COM. RegAsm.exe is part of the .NET SDK and just generates some Registry entries, like the ones in the example RTDServiceRegistrationExample.reg file.
 
 ## Run ##
 As said, the shipped data contains a Visual C# Library project, thus not directly runnable. In order to run it, please follow the instructions at the Compile section above. Once RTDLibraryExcelDemo.dll is registered, ExcelDemo.xls has to be opened.
