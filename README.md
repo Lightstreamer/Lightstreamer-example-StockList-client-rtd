@@ -87,3 +87,4 @@ By default, this release points to our demo Lightstreamer server, so if you just
 # Lightstreamer Compatibility Notes #
 
 - Compatible with Lightstreamer .NET Client Library version 2.1 or newer.
+- For Lightstreamer Allegro+, Presto, Vivace.
