@@ -7,7 +7,7 @@ This project includes a demo client showing integration between Lightstreamer .N
 <table>
   <tr>
     <td style="text-align: left">
-      &nbsp;<a href="http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi" target="_blank"><img src="http://www.lightstreamer.com/img/demo/screen_rtd.png"></a>&nbsp;
+      &nbsp;<a href="http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi" target="_blank"><img src="screen_rtd.png"></a>&nbsp;
       
     </td>
     <td>
@@ -87,4 +87,4 @@ By default, this release points to our demo Lightstreamer server, so if you just
 # Lightstreamer Compatibility Notes #
 
 - Compatible with Lightstreamer .NET Client Library version 2.1 or newer.
-- For Lightstreamer Allegro+, Presto, Vivace.
+- For Lightstreamer Allegro (+ .NET Client API support), Presto, Vivace.
