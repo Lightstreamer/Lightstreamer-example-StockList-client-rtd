@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Net;
 using Lightstreamer.DotNet.Client;
 
 namespace Lightstreamer.DotNet.Client.Demo
@@ -36,10 +37,12 @@ namespace Lightstreamer.DotNet.Client.Demo
         private IRtdLightstreamerListener listener;
         private LSClient client;
         private SubscribedTableKey tableKey;
+        private FlowForm flowForm = null;
 
         public LightstreamerClient(
             IRtdLightstreamerListener listener,
-            string[] items, string[] fields)
+            string[] items, string[] fields,
+            FlowForm flowForm)
         {
             if (listener == null)
             {
@@ -48,6 +51,7 @@ namespace Lightstreamer.DotNet.Client.Demo
             this.items = items;
             this.fields = fields;
             this.listener = listener;
+            this.flowForm = flowForm;
             client = new LSClient();
         }
 
@@ -59,7 +63,7 @@ namespace Lightstreamer.DotNet.Client.Demo
             this.client.CloseConnection();
         }
 
-        public void Start(string pushServerUrl)
+        public void Start(string pushServerUrl, bool askCredentials)
         {
             ConnectionInfo connInfo = new ConnectionInfo();
             connInfo.PushServerUrl = pushServerUrl;
@@ -73,6 +77,17 @@ namespace Lightstreamer.DotNet.Client.Demo
             {
                 try
                 {
+                    if (askCredentials)
+                    {
+                        if ( this.flowForm != null) 
+                        {
+                            String proxyUsr = flowForm.askProxyUsr();
+                            String proxyPwd = flowForm.askProxyPwd();
+
+                            IWebProxy proxy = WebRequest.DefaultWebProxy;
+                            proxy.Credentials = new NetworkCredential(proxyUsr, proxyPwd);
+                        }
+                    }
                     //WebRequest.
                     this.client.OpenConnection(connInfo, ls);
                     connected = true;
@@ -80,14 +95,26 @@ namespace Lightstreamer.DotNet.Client.Demo
                 catch (PushConnException e)
                 {
                     listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                    if (e.Message.Contains("407"))
+                    {
+                        askCredentials = true;
+                    }
                 }
                 catch (PushServerException e)
                 {
                     listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                    if (e.Message.Contains("407"))
+                    {
+                        askCredentials = true;
+                    }
                 }
                 catch (PushUserException e)
                 {
                     listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                    if (e.Message.Contains("407"))
+                    {
+                        askCredentials = true;
+                    }
                 }
 
                 if (!connected)

@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using Microsoft.VisualBasic;
 
 namespace Lightstreamer.DotNet.Client.Demo
 {
@@ -44,6 +45,7 @@ namespace Lightstreamer.DotNet.Client.Demo
         {
 
         }
+
 
         public void UpdateConnectionStatusLabel(string text)
         {
@@ -86,6 +88,16 @@ namespace Lightstreamer.DotNet.Client.Demo
             {
                 /* do nothing */
             }
+        }
+
+        public System.String askProxyUsr() 
+        {
+            return Interaction.InputBox("Please provide username for Proxy Authentication:", "Proxy Credentials", "user");
+        }
+
+        public System.String askProxyPwd()
+        {
+            return Interaction.InputBox("Please provide password for Proxy Authentication:", "Proxy Credentials", "pwd");
         }
 
         private void cbxToggleStream_CheckedChanged(object sender, EventArgs e)

@@ -18,8 +18,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Linq;
 using Microsoft.Office.Interop.Excel;
 using Lightstreamer.DotNet.Client;
 using System.Runtime.InteropServices;
@@ -108,11 +108,12 @@ namespace Lightstreamer.DotNet.Client.Demo
 
         public RtdServer()
         {
-            // setup Lightstreamer Client instance
-            lsClient = new LightstreamerClient(this, items, fields);
-
             flowForm = new FlowForm(this);
             flowForm.Activate();
+
+            // setup Lightstreamer Client instance
+            lsClient = new LightstreamerClient(this, items, fields, this.flowForm);
+
             flowForm.Show();
             flowForm.BringToFront();
 
@@ -214,8 +215,8 @@ namespace Lightstreamer.DotNet.Client.Demo
             updateQueue.Clear();
             topicIdMap.Clear();
             reverseTopicIdMap.Clear();
-            lsClient = new LightstreamerClient(this, items, fields);
-            lsClient.Start(pushServerUrl);
+            lsClient = new LightstreamerClient(this, items, fields, flowForm);
+            lsClient.Start(pushServerUrl, false);
         }
 
         /// <summary>
@@ -233,7 +234,7 @@ namespace Lightstreamer.DotNet.Client.Demo
             reverseTopicIdMap.Clear();
             updateQueue.Clear();
             topicIdMap.Clear();
-            (new Thread(new ThreadStart(delegate() { lsClient.Start(pushServerUrl); }))).Start();
+            (new Thread(new ThreadStart(delegate() { lsClient.Start(pushServerUrl, false); }))).Start();
             rtdUpdateEvent = CallbackObject;
             return 1;
         }
