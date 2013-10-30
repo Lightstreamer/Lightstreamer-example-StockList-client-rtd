@@ -233,7 +233,7 @@ namespace Lightstreamer.DotNet.Client.Demo
             reverseTopicIdMap.Clear();
             updateQueue.Clear();
             topicIdMap.Clear();
-            new ThreadStart(delegate() { lsClient.Start(pushServerUrl); }).Invoke();
+            (new Thread(new ThreadStart(delegate() { lsClient.Start(pushServerUrl); }))).Start();
             rtdUpdateEvent = CallbackObject;
             return 1;
         }

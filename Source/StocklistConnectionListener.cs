@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Lightstreamer.DotNet.Client;
+using System.Threading;
 
 namespace Lightstreamer.DotNet.Client.Demo
 {
@@ -40,15 +41,20 @@ namespace Lightstreamer.DotNet.Client.Demo
     {
 
         private IRtdLightstreamerListener listener;
+        private LightstreamerClient lsClient;
+        private string pushServerUrl = null;
         private bool isPolling;
 
-        public StocklistConnectionListener(IRtdLightstreamerListener listener)
+        public StocklistConnectionListener(IRtdLightstreamerListener listener, LightstreamerClient ls, String url)
         {
             if (listener == null)
             {
                 throw new ArgumentNullException("listener");
             }
             this.listener = listener;
+
+            this.lsClient = ls;
+            this.pushServerUrl = url;
         }
 
         public void OnConnectionEstablished()
@@ -100,12 +106,21 @@ namespace Lightstreamer.DotNet.Client.Demo
         {
             listener.OnStatusChange(LightstreamerConnectionHandler.DISCONNECTED,
                 "Connection closed");
+            if ( (this.lsClient != null) && (this.pushServerUrl != null) )
+            {
+                listener.OnStatusChange(LightstreamerConnectionHandler.DISCONNECTED,
+                "Connection closed ... retrying ...");
+                (new Thread(new ThreadStart(delegate() { this.lsClient.Start(this.pushServerUrl); }))).Start();
+            }
+          
         }
 
         public void OnEnd(int cause)
         {
             listener.OnStatusChange(LightstreamerConnectionHandler.DISCONNECTED,
                 "Connection forcibly closed");
+
+
         }
 
         public void OnFailure(PushServerException e)

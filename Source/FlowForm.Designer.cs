@@ -62,9 +62,9 @@ namespace Lightstreamer.DotNet.Client.Demo
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 119F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 107F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 141F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(366, 321);
             this.tableLayoutPanel1.TabIndex = 0;
@@ -94,7 +94,7 @@ namespace Lightstreamer.DotNet.Client.Demo
             // lblItemCounter
             // 
             this.lblItemCounter.AutoSize = true;
-            this.lblItemCounter.Location = new System.Drawing.Point(3, 64);
+            this.lblItemCounter.Location = new System.Drawing.Point(3, 79);
             this.lblItemCounter.Name = "lblItemCounter";
             this.lblItemCounter.Size = new System.Drawing.Size(109, 13);
             this.lblItemCounter.TabIndex = 2;
@@ -105,7 +105,7 @@ namespace Lightstreamer.DotNet.Client.Demo
             this.cbxToggleStream.AutoSize = true;
             this.cbxToggleStream.Checked = true;
             this.cbxToggleStream.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbxToggleStream.Location = new System.Drawing.Point(224, 67);
+            this.cbxToggleStream.Location = new System.Drawing.Point(224, 82);
             this.cbxToggleStream.Name = "cbxToggleStream";
             this.cbxToggleStream.Size = new System.Drawing.Size(124, 17);
             this.cbxToggleStream.TabIndex = 9;
@@ -117,11 +117,11 @@ namespace Lightstreamer.DotNet.Client.Demo
             // 
             this.tbLightstreamer.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.tableLayoutPanel1.SetColumnSpan(this.tbLightstreamer, 2);
-            this.tbLightstreamer.Location = new System.Drawing.Point(3, 94);
+            this.tbLightstreamer.Location = new System.Drawing.Point(3, 106);
             this.tbLightstreamer.Multiline = true;
             this.tbLightstreamer.Name = "tbLightstreamer";
             this.tbLightstreamer.ReadOnly = true;
-            this.tbLightstreamer.Size = new System.Drawing.Size(360, 113);
+            this.tbLightstreamer.Size = new System.Drawing.Size(360, 101);
             this.tbLightstreamer.TabIndex = 10;
             // 
             // tbExcel

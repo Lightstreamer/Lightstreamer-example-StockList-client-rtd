@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Threading;
 using Lightstreamer.DotNet.Client;
 
 namespace Lightstreamer.DotNet.Client.Demo
@@ -54,9 +54,9 @@ namespace Lightstreamer.DotNet.Client.Demo
         public void Stop()
         {
             if (tableKey != null)
-                client.UnsubscribeTable(tableKey);
+                this.client.UnsubscribeTable(tableKey);
             tableKey = null;
-            client.CloseConnection();
+            this.client.CloseConnection();
         }
 
         public void Start(string pushServerUrl)
@@ -65,15 +65,44 @@ namespace Lightstreamer.DotNet.Client.Demo
             connInfo.PushServerUrl = pushServerUrl;
             connInfo.Adapter = "DEMO";
             StocklistConnectionListener ls = new StocklistConnectionListener(
-                listener);
-            client.OpenConnection(connInfo, ls);
+                listener,this,pushServerUrl);
+
+            bool connected = false;
+            //this method will not exit until the openConnection returns without throwing an exception
+            while (!connected)
+            {
+                try
+                {
+                    //WebRequest.
+                    this.client.OpenConnection(connInfo, ls);
+                    connected = true;
+                }
+                catch (PushConnException e)
+                {
+                    listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                }
+                catch (PushServerException e)
+                {
+                    listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                }
+                catch (PushUserException e)
+                {
+                    listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                }
+
+                if (!connected)
+                {
+                    Thread.Sleep(1000);
+                }
+            }
 
             SimpleTableInfo tableInfo = new ExtendedTableInfo(
-                items, "MERGE", fields, true);
+            items, "MERGE", fields, true);
             tableInfo.DataAdapter = "QUOTE_ADAPTER";
 
             tableKey = client.SubscribeTable(tableInfo,
                 new StocklistHandyTableListener(listener), false);
+            
         }
     }
 
