@@ -7,7 +7,7 @@ This project includes a demo client showing integration between Lightstreamer .N
 <table>
   <tr>
     <td style="text-align: left">
-      &nbsp;<a href="http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi" target="_blank"><img src="screen_rtd.png"></a>&nbsp;
+      &nbsp;<a href="http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi" target="_blank"><img src="screen_rtd_new.png"></a>&nbsp;
       
     </td>
     <td>
@@ -34,10 +34,10 @@ Check out the sources for further explanations.
 
 If you want to skip the build and deploy processes of this demo please note that you can click the image or link above to download a ".msi" file ready for installation on your machine. Installation instructions:<br>
 
-1. You need Microsoft Excel 2002 or newer installed on your PC.
+1. You need Microsoft Excel 2007 or newer installed on your PC.
 2. Click the link or image above to download the application installer (a ".msi" file).
 3. Execute the downloaded file to install the application.
-4. From the Start menu, go to the "Lightstreamer RTD Demo" folder, click the "Start Lightstreamer Excel RTD Server Demo" link. This will open Excel and automatically load the "ExcelDemo.xls" spreadsheet (which, by the way, is contained in "C:\Program Files (x86)\Lightstreamer .NET RTD Server Demo library for Excel\static").
+4. From the Start menu, go to the "Lightstreamer RTD Demo" folder, click the "Start Lightstreamer Excel RTD Server Demo" link. This will open Excel and automatically load the "ExcelDemo.xlsx" spreadsheet (which, by the way, is contained in "C:\Program Files (x86)\Lightstreamer .NET RTD Server Demo library for Excel\static").
 5. The spreadsheet will activate the Lightstreamer RTD library, which will open a control window, where you can see the data traffic.
 <br>
 The control windows shows a counter with the updates received from Lightstreamer Server and logs such updates in real time. Is also shows the notifications issued towards Excel. To pause the notification calls, uncheck "Data stream to Excel".
@@ -47,7 +47,7 @@ In the Excel spreadsheet, you will see several cells changing in real time. If t
 * Open the Immediate window (press CTRL+G or click Immediate Window on the View menu).
 * In the Immediate window type this code and press ENTER: Application.RTD.ThrottleInterval = 0
 
-Otherwise, in order to compile the project, a version of Excel implementing RTD features must be installed (usually Excel 2002, 2003, 2007, 2010+). For more information regarding the RTD technology please visit this [page](http://social.msdn.microsoft.com/Search/en-us?query=RTD).
+Otherwise, in order to compile the project, a version of Excel implementing RTD features must be installed (usually Excel 2007, 2010+). For more information regarding the RTD technology please visit this [page](http://social.msdn.microsoft.com/Search/en-us?query=RTD).
 For more information regarding Visual C# 2010 Express and how to run it, please go to: [http://www.microsoft.com/express/Downloads/#2010-Visual-CS](http://www.microsoft.com/express/Downloads/#2010-Visual-CS).
   
 <i>NOTE: You may also use the sources included in this project with another Microsoft IDE or without any IDE but such approach is not covered in this readme.</i>
@@ -55,7 +55,7 @@ For more information regarding Visual C# 2010 Express and how to run it, please 
 You just need to create a Visual Studio project for a Class library (DLL) target, then include the sources and properties files and include references to the Microsoft.Office.Interop.Excel and Lightstreamer.NET Client API (for Lightstreamer binaries files DotNetClient_N2.dll and DotNetClient_N2.pdb) from the [latest Lightstreamer distribution](http://www.lightstreamer.com/download). After the compilation of your DLL, you need to run RegAsm.exe tool in order to register it against COM. RegAsm.exe is part of the .NET SDK and just generates some Registry entries, like the ones in the example RTDServiceRegistrationExample.reg file.
 
 ## Run ##
-As said, the shipped data contains a Visual C# Library project, thus not directly runnable. In order to run it, please follow the instructions at the Compile section above. Once RTDLibraryExcelDemo.dll is registered, ExcelDemo.xls has to be opened.
+As said, the shipped data contains a Visual C# Library project, thus not directly runnable. In order to run it, please follow the instructions at the Compile section above. Once RTDLibraryExcelDemo.dll is registered, ExcelDemo.xlsx has to be opened.
 If the registration went successful, Excel will load RTDLibraryExcelDemo.dll, a status window will appear and real-time data will start to be delivered to it. A quick and easy way to avoid dealing with Registry entries is to install the shipped version of the library with the downloadable [RTDLibraryExcelDemoSetup.msi](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi), then just
 compile your own .dll replacing the one installed.
 

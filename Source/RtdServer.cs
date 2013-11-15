@@ -44,12 +44,22 @@ namespace Lightstreamer.DotNet.Client.Demo
         public int TopicID;
         public IUpdateInfo update;
         public string field;
+        public string value;
+
         public RtdUpdateQueueItem(int TopicID, string field, IUpdateInfo update)
         {
             this.TopicID = TopicID;
             this.field = field;
             this.update = update;
         }
+
+        public RtdUpdateQueueItem(int TopicID, string field, string value)
+        {
+            this.TopicID = TopicID;
+            this.field = field;
+            this.value = value;
+        }
+
     }
 
     /// <summary>
@@ -61,31 +71,24 @@ namespace Lightstreamer.DotNet.Client.Demo
     public class RtdServer : IRtdServer, IRtdLightstreamerListener
     {
 
-        // Lightstreamer Server information, make this point to a valid Lightstreamer
-        // server URL.
-        private const string pushServerHost = "http://push.lightstreamer.com";
-        // port, if different from 80
-        private const string pushServerPort = "";
         private string pushServerUrl = null;
         private bool feedingToggle = true;
         // This is set to 0 when FormClose is called, and makes
         // Hearthbeat() returning a problem.
         private int serverAlive = 1;
 
-        // Lightstreamer items and their fields served by this library
-        private string[] items = {"item1", "item2", "item3", "item4", "item5", "item6", "item7", "item8",
-                                     "item9", "item10", "item11", "item12", "item13", "item14", "item15",
-                                     "item16", "item17", "item18", "item19", "item20", "item21", "item22",
-                                     "item23", "item24", "item25", "item26", "item27", "item28",
-                                     "item29", "item30" };
-        private string[] fields = {"stock_name", "last_price", "time", "pct_change", "bid_quantity", "bid",
-                                      "ask", "ask_quantity", "min", "max", "ref_price", "open_price" };
+        private string serverStatus = "DISCONNECTED";
 
+        private string[] items = { };
+
+        private string[] fields = { };
 
         // some internal caches used in this class
         private Dictionary<string, IUpdateInfo> itemCache = new Dictionary<string, IUpdateInfo>();
         private Dictionary<int, string[]> topicIdMap = new Dictionary<int, string[]>();
         private Dictionary<string, int> reverseTopicIdMap = new Dictionary<string, int>();
+        private Dictionary<string, List<string>> subsDone = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> subsWait = new Dictionary<string, List<string>>();
 
         // this is a simple queue used to store updates that this class has to send to
         // Excel when RefreshData() is called. It's flushed out on RefreshData() and
@@ -100,11 +103,61 @@ namespace Lightstreamer.DotNet.Client.Demo
         private FlowForm flowForm = null;
 
         // default RtdServer ProgID
-        internal const string RTD_PROG_ID = "Lightstreamer.RtdExcelDemo";
+        internal const string RTD_PROG_ID = "lightstreamer.rtdexceldemo";
         // set this to the network computer name the RtdServer will run on
         // if the application will only serve local Excel requests, leave
         // this blank
         private const string RTD_SERVER = "";
+
+
+        private void callWaitingSubs() 
+        {
+            foreach(string key in subsWait.Keys)
+            {
+                List<string> l = null;
+
+                if (subsWait.TryGetValue(key, out l))
+                {
+                    string[] listOfFields = new string[l.Count];
+                    int i = 0;
+
+                    foreach(string f in l) 
+                    {
+                        listOfFields[i++] = f;
+                    }
+
+                    lsClient.AddSubcribe(new string[] { key }, listOfFields);
+                    subsDone.Add(key, l);
+
+                    flowForm.AppendExcelLog("ConnectData - recover waiting Subscription, itemName: " + key + ", field: " + listOfFields);
+                }
+            }
+
+            subsWait.Clear();
+        }
+
+        private void resubOnReconnect()
+        {
+            foreach (string key in subsDone.Keys)
+            {
+                List<string> l = null;
+
+                if (subsDone.TryGetValue(key, out l))
+                {
+                    string[] listOfFields = new string[l.Count];
+                    int i = 0;
+
+                    foreach (string f in l)
+                    {
+                        listOfFields[i++] = f;
+                    }
+
+                    lsClient.AddSubcribe(new string[] { key }, listOfFields);
+
+                    flowForm.AppendExcelLog("ConnectData - recover waiting Subscription, itemName: " + key + ", field: " + listOfFields);
+                }
+            }
+        }
 
         public RtdServer()
         {
@@ -112,23 +165,66 @@ namespace Lightstreamer.DotNet.Client.Demo
             flowForm.Activate();
 
             // setup Lightstreamer Client instance
-            lsClient = new LightstreamerClient(this, items, fields, this.flowForm);
+            lsClient = new LightstreamerClient(this, null, null, this.flowForm);
 
             flowForm.Show();
             flowForm.BringToFront();
 
-            pushServerUrl = pushServerHost;
-            if (!pushServerPort.Equals(""))
-            {
-                pushServerUrl += ":" + pushServerPort;
-            }
+            pushServerUrl = "http://localhost:80";
+
         }
 
         public object ConnectData(int TopicID, ref Array Strings, ref bool GetNewValues)
         {
+            List<string> item_fields = null;
 
             if (Strings.Length > 1)
             {
+
+                if (((string)Strings.GetValue(0)).Equals("CONFIG"))
+                {
+                    string ls_server_url = (string)Strings.GetValue(1);
+                    string ls_server_port = (string)Strings.GetValue(2);
+                    string ls_adapter_set = (string)Strings.GetValue(3);
+                    string ls_adapter_name = (string)Strings.GetValue(4);
+
+                    pushServerUrl = ls_server_url;
+                    if (!ls_server_port.Equals(""))
+                    {
+                        pushServerUrl += ":" + ls_server_port;
+                    }
+                    lsClient.setUrl(pushServerUrl);
+                    lsClient.setAdapterSet(ls_adapter_set);
+                    lsClient.setAdapterName(ls_adapter_name);
+
+                    // register association between Topic ID and itemName and field.
+                    topicIdMap[TopicID] = new string[] { "CONFIG" };
+                    reverseTopicIdMap["CONFIG"] = TopicID;
+
+                    flowForm.AppendExcelLog("Setup Connection info (" + this.serverStatus + "), url: " + ls_server_url + ", port: " + ls_server_port + ", set: " + ls_adapter_set + ", data adapter: " + ls_adapter_name);
+
+                    return this.serverStatus;
+                }
+
+                if (((string)Strings.GetValue(0)).Equals("LAST"))
+                {
+                    topicIdMap[TopicID] = new string[] { "LAST" };
+                    reverseTopicIdMap["LAST"] = TopicID;
+
+                    string wait = "...";
+                    return wait;
+                }
+
+                if (((string)Strings.GetValue(0)).Equals("PX"))
+                {
+                    topicIdMap[TopicID] = new string[] { "PX" };
+                    reverseTopicIdMap["PX"] = TopicID;
+
+                    string pxw = "0";
+                    return pxw;
+                }
+
+
                 string itemName = (string)Strings.GetValue(0);
                 string field = (string)Strings.GetValue(1);
 
@@ -139,19 +235,65 @@ namespace Lightstreamer.DotNet.Client.Demo
                 topicIdMap[TopicID] = new string[] { itemName, field };
                 reverseTopicIdMap[itemName + "@" + field] = TopicID;
                 IUpdateInfo update;
-                // if item is already in cache, then send it out, otherwise just send N/A string
-                // Excel will get a valid string as soon as it will be available.
-                if (itemCache.TryGetValue(itemName, out update))
+
+                if (subsDone.TryGetValue(itemName, out item_fields))
                 {
-                    string value = update.GetNewValue(field);
-                    flowForm.AppendExcelLog("ConnectData, topic: " + TopicID + ", itemName: " +
-                        itemName + ", returning to Excel: " + value);
-                    return value;
+                    if (item_fields.Contains(field))
+                    {
+                        // if item is already in cache, then send it out, otherwise just send N/A string
+                        // Excel will get a valid string as soon as it will be available.
+                        if (itemCache.TryGetValue(itemName, out update))
+                        {
+                            string value = update.GetNewValue(field);
+                            flowForm.AppendExcelLog("ConnectData, topic: " + TopicID + ", itemName: " +
+                                itemName + ", returning to Excel: " + value);
+                            return value;
+                        }
+                    }
+                    else
+                    {
+                        flowForm.AppendExcelLog("ConnectData - add2 Subscription, itemName: " + itemName + ", field: " + field);
+                        
+                        item_fields.Add(field);
+                        
+                        if (lsClient.isConnected())
+                        {
+                            lsClient.AddSubcribe(new string[] { itemName }, new string[] { field });
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    flowForm.AppendExcelLog("ConnectData - add Subscription, itemName: " + itemName + ", field: " + field);
+                    List<string> myFields = new List<string>( );
+                    myFields.Add(field);
+                    if (lsClient.isConnected())
+                    {
+                        lsClient.AddSubcribe(new string[] { itemName }, new string[] { field });
+                        subsDone.Add(itemName, myFields);
+                    }
+                    else 
+                    {
+                        List<string> l = null;
+                        flowForm.AppendExcelLog("ConnectData - waiting Subscription, itemName: " + itemName + ", field: " + field);
+
+                        if (subsWait.TryGetValue(itemName, out l))
+                        {
+                            l.Add(field);
+                        }
+                        else
+                        {
+                            subsWait.Add(itemName, myFields);
+                        }
+                    }
+                    
                 }
                 flowForm.AppendExcelLog("ConnectData, topic: " + TopicID + ", itemName: " +
                     itemName + ", returning to Excel: Wait...");
-                string wait = "Wait...";
-                return wait;
+                string res = "Wait...";
+                return res;
             }
             flowForm.AppendExcelLog("ConnectData, topic: " + TopicID +
                 ", returning to Excel: ERROR");
@@ -199,7 +341,26 @@ namespace Lightstreamer.DotNet.Client.Demo
                 }
                 // build the update object
                 data[0, updatesCount] = item.TopicID;
-                data[1, updatesCount] = item.update.GetNewValue(item.field);
+                if (item.field.Equals("price"))
+                {
+                    double result = Convert.ToDouble(item.update.GetNewValue(item.field), System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+                    data[1, updatesCount] = result.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+                }
+                else if (item.field.Equals("")) {
+                    if (topicIdMap[item.TopicID][0].Equals("PX"))
+                    {
+                        double px = Convert.ToDouble(item.value, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+                        data[1, updatesCount] = px.ToString("N2", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+                    }
+                    else
+                    {
+                        data[1, updatesCount] = item.value;
+                    }
+                }
+                else
+                {
+                    data[1, updatesCount] = item.update.GetNewValue(item.field);
+                }
                 ++updatesCount;
                 --enqueuedUpdates;
             }
@@ -215,8 +376,6 @@ namespace Lightstreamer.DotNet.Client.Demo
             updateQueue.Clear();
             topicIdMap.Clear();
             reverseTopicIdMap.Clear();
-            lsClient = new LightstreamerClient(this, items, fields, flowForm);
-            lsClient.Start(pushServerUrl, false);
         }
 
         /// <summary>
@@ -234,7 +393,7 @@ namespace Lightstreamer.DotNet.Client.Demo
             reverseTopicIdMap.Clear();
             updateQueue.Clear();
             topicIdMap.Clear();
-            (new Thread(new ThreadStart(delegate() { lsClient.Start(pushServerUrl, false); }))).Start();
+            (new Thread(new ThreadStart(delegate() { lsClient.Start(false); }))).Start();
             rtdUpdateEvent = CallbackObject;
             return 1;
         }
@@ -279,10 +438,47 @@ namespace Lightstreamer.DotNet.Client.Demo
             flowForm.AppendLightstreamerLog("OnStatusChange, status: " + status + ", " +
                 message);
             flowForm.UpdateConnectionStatusLabel(message);
+
+            if (status == 3 || status == 4) 
+            {
+                callWaitingSubs();
+                resubOnReconnect();
+            }
+
+            if ( status == 0 ) {
+                this.serverStatus = "DISCONNECTED";
+            } else if ( status == 1 ) {
+                this.serverStatus = "CONNECTING";
+            } else if ( status == 2 ) {
+                this.serverStatus = "CONNECTED";
+            } else if ( status == 3 ) {
+                this.serverStatus = "STREAMING";
+            } else if ( status == 4 ) {
+                this.serverStatus = "POLLING";
+            } else if ( status == 5 ) {
+                this.serverStatus = "STALLED";
+            } else {
+                this.serverStatus = "ERROR";
+            }
+
+            int topicId;
+            if (reverseTopicIdMap.TryGetValue("CONFIG", out topicId))
+            {
+                updateQueue.Enqueue(new RtdUpdateQueueItem(topicId, "", this.serverStatus));
+                if (rtdUpdateEvent != null)
+                {
+                    // notify Excel that updates exist
+                    // if this fails, it means that Excel is not ready
+                    rtdUpdateEvent.UpdateNotify();
+                    flowForm.AppendExcelLog("OnItemUpdate, Excel notified. HB interval: " + rtdUpdateEvent.HeartbeatInterval);
+                }
+            }
+
         }
 
         public void OnItemUpdate(int itemPos, string itemName, IUpdateInfo update)
         {
+            List<string> item_fields = null;
 
             flowForm.AppendLightstreamerLog("OnItemUpdate, pos: " + itemPos + ", name: " +
                 itemName + ", update:" + update);
@@ -296,30 +492,58 @@ namespace Lightstreamer.DotNet.Client.Demo
 
             itemCache[itemName] = update;
 
-            bool updatesExist = false;
-            for (int i = 0; i < fields.Length; i++)
+
+            if (subsDone.TryGetValue(itemName, out item_fields)) 
             {
-                string field = fields[i];
-                if (update.IsValueChanged(field))
+                bool updatesExist = false;
+                foreach(string field in item_fields)
                 {
-                    // push to update queue
-                    if (updateQueue.Count() < updateQueueMaxLength)
+                    try
                     {
-                        int topicId;
-                        if (reverseTopicIdMap.TryGetValue(itemName + "@" + field, out topicId))
+                        if (update.IsValueChanged(field))
                         {
-                            updatesExist = true;
-                            updateQueue.Enqueue(new RtdUpdateQueueItem(topicId, field, update));
+                            if (update.GetNewValue(field) != null)
+                            {
+                                // push to update queue
+                                if (updateQueue.Count() < updateQueueMaxLength)
+                                {
+                                    int topicId;
+                                    if (reverseTopicIdMap.TryGetValue(itemName + "@" + field, out topicId))
+                                    {
+                                        updatesExist = true;
+                                        updateQueue.Enqueue(new RtdUpdateQueueItem(topicId, field, update));
+                                        if (field.Equals("time"))
+                                        {
+                                              int topicId_Last;
+                                              if (reverseTopicIdMap.TryGetValue("LAST", out topicId_Last))
+                                              {
+                                                updateQueue.Enqueue(new RtdUpdateQueueItem(topicId_Last, "", update.GetNewValue(field)));
+                                              }
+                                        }
+                                        if (field.Equals("last_price"))
+                                        {
+                                            int topicId_Last_px;
+                                            if (reverseTopicIdMap.TryGetValue("PX", out topicId_Last_px))
+                                            {
+                                                updateQueue.Enqueue(new RtdUpdateQueueItem(topicId_Last_px, "", update.GetNewValue(field)));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
+                    } catch (ArgumentException ae) 
+                    {
+                        // Skip ... 
                     }
                 }
-            }
-            if (updatesExist && (rtdUpdateEvent != null))
-            {
-                // notify Excel that updates exist
-                // if this fails, it means that Excel is not ready
-                rtdUpdateEvent.UpdateNotify();
-                flowForm.AppendExcelLog("OnItemUpdate, Excel notified. HB interval: " + rtdUpdateEvent.HeartbeatInterval);
+                if (updatesExist && (rtdUpdateEvent != null))
+                {
+                    // notify Excel that updates exist
+                    // if this fails, it means that Excel is not ready
+                    rtdUpdateEvent.UpdateNotify();
+                    flowForm.AppendExcelLog("OnItemUpdate, Excel notified. HB interval: " + rtdUpdateEvent.HeartbeatInterval);
+                }
             }
         }
 

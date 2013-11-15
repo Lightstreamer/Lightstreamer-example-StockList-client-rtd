@@ -108,9 +108,10 @@ namespace Lightstreamer.DotNet.Client.Demo
                 "Connection closed");
             if ( (this.lsClient != null) && (this.pushServerUrl != null) )
             {
+                this.lsClient.Disconnected();
                 listener.OnStatusChange(LightstreamerConnectionHandler.DISCONNECTED,
                 "Connection closed ... retrying ...");
-                (new Thread(new ThreadStart(delegate() { this.lsClient.Start(this.pushServerUrl, false); }))).Start();
+                (new Thread(new ThreadStart(delegate() { this.lsClient.Start(false); }))).Start();
             }
           
         }

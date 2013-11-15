@@ -66,9 +66,14 @@ namespace Lightstreamer.DotNet.Client.Demo
         {
             try
             {
-                /* WARNING: can grow indefinitely */
                 tbLightstreamer.Invoke(new ThreadStart(
-                    delegate() { tbLightstreamer.AppendText(message + "\r\n"); }));
+                    delegate() {
+                        if (tbLightstreamer.TextLength > 5000)
+                        {
+                            tbLightstreamer.Clear();
+                        }
+                        tbLightstreamer.AppendText(message + "\r\n"); 
+                    }));
             }
             catch (InvalidOperationException)
             {
@@ -80,9 +85,14 @@ namespace Lightstreamer.DotNet.Client.Demo
         {
             try
             {
-                /* WARNING: can grow indefinitely */
                 tbExcel.Invoke(new ThreadStart(
-                    delegate() { tbExcel.AppendText(message + "\r\n"); }));
+                    delegate() {
+                        if (tbExcel.TextLength > 5000)
+                        {
+                            tbExcel.Clear();
+                        }
+                        tbExcel.AppendText(message + "\r\n"); 
+                    }));
             }
             catch (InvalidOperationException)
             {

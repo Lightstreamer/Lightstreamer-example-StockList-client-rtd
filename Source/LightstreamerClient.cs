@@ -31,28 +31,60 @@ namespace Lightstreamer.DotNet.Client.Demo
 
     class LightstreamerClient
     {
-        private string[] items;
-        private string[] fields;
-
+        private string adapter_set = null;
+        private string adapter_name = null;
+        private string pushServerUrl = null;
         private IRtdLightstreamerListener listener;
         private LSClient client;
         private SubscribedTableKey tableKey;
         private FlowForm flowForm = null;
+        private bool connected = false;
 
         public LightstreamerClient(
             IRtdLightstreamerListener listener,
-            string[] items, string[] fields,
+            string adapter_set, string adapter_name,
             FlowForm flowForm)
         {
             if (listener == null)
             {
                 throw new ArgumentNullException("listener is null");
             }
-            this.items = items;
-            this.fields = fields;
+            this.adapter_set = adapter_set;
+            this.adapter_name = adapter_name;
             this.listener = listener;
             this.flowForm = flowForm;
             client = new LSClient();
+        }
+
+        public bool isConnected()
+        {
+            return this.connected;
+        }
+
+        public void setAdapterSet(string adapter_set)
+        {
+            this.adapter_set = adapter_set;
+        }
+
+        public void setUrl(string url)
+        {
+            this.pushServerUrl = url;
+            flowForm.AppendLightstreamerLog(" ... push url: " + url);
+        }
+
+        public void setAdapterName(string adapter_name)
+        {
+            this.adapter_name = adapter_name;
+        }
+
+        public void AddSubcribe(string[] items, string[] fields)
+        {
+            SimpleTableInfo tableInfo = new ExtendedTableInfo(
+                items, "MERGE", fields, true);
+            tableInfo.DataAdapter = this.adapter_name;
+
+            tableKey = client.SubscribeTable(tableInfo,
+                new StocklistHandyTableListener(listener), false);
         }
 
         public void Stop()
@@ -63,57 +95,74 @@ namespace Lightstreamer.DotNet.Client.Demo
             this.client.CloseConnection();
         }
 
-        public void Start(string pushServerUrl, bool askCredentials)
+        public void Disconnected()
+        {
+            this.connected = false;
+        }
+        
+        public void Start(bool askCredentials)
         {
             ConnectionInfo connInfo = new ConnectionInfo();
-            connInfo.PushServerUrl = pushServerUrl;
-            connInfo.Adapter = "DEMO";
-            StocklistConnectionListener ls = new StocklistConnectionListener(
-                listener,this,pushServerUrl);
 
-            bool connected = false;
+            flowForm.AppendLightstreamerLog("Start connecting to push server... ");
+
             //this method will not exit until the openConnection returns without throwing an exception
             while (!connected)
             {
-                try
+                if (this.pushServerUrl != null)
                 {
-                    if (askCredentials)
-                    {
-                        if ( this.flowForm != null) 
-                        {
-                            String proxyUsr = flowForm.askProxyUsr();
-                            String proxyPwd = flowForm.askProxyPwd();
+                    connInfo.PushServerUrl = this.pushServerUrl;
+                    connInfo.Adapter = this.adapter_set;
+                    StocklistConnectionListener ls = new StocklistConnectionListener(listener, this, this.pushServerUrl);
 
-                            IWebProxy proxy = WebRequest.DefaultWebProxy;
-                            proxy.Credentials = new NetworkCredential(proxyUsr, proxyPwd);
+                    try
+                    {
+                        if (askCredentials)
+                        {
+                            if (this.flowForm != null)
+                            {
+                                String proxyUsr = flowForm.askProxyUsr();
+                                String proxyPwd = flowForm.askProxyPwd();
+
+                                IWebProxy proxy = WebRequest.DefaultWebProxy;
+                                proxy.Credentials = new NetworkCredential(proxyUsr, proxyPwd);
+                            }
+                        }
+                        //WebRequest.
+                        this.client.OpenConnection(connInfo, ls);
+                        connected = true;
+                    }
+                    catch (PushConnException e)
+                    {
+                        listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                        if (e.Message.Contains("407"))
+                        {
+                            askCredentials = true;
                         }
                     }
-                    //WebRequest.
-                    this.client.OpenConnection(connInfo, ls);
-                    connected = true;
-                }
-                catch (PushConnException e)
-                {
-                    listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
-                    if (e.Message.Contains("407"))
+                    catch (PushServerException e)
                     {
-                        askCredentials = true;
+                        listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                        if (e.Message.Contains("407"))
+                        {
+                            askCredentials = true;
+                        }
                     }
-                }
-                catch (PushServerException e)
-                {
-                    listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
-                    if (e.Message.Contains("407"))
+                    catch (PushUserException e)
                     {
-                        askCredentials = true;
+                        listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                        if (e.Message.Contains("407"))
+                        {
+                            askCredentials = true;
+                        }
                     }
-                }
-                catch (PushUserException e)
-                {
-                    listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
-                    if (e.Message.Contains("407"))
+                    catch (Exception e)
                     {
-                        askCredentials = true;
+                        listener.OnStatusChange(LightstreamerConnectionHandler.ERROR, e.Message);
+                        if (e.Message.Contains("407"))
+                        {
+                            askCredentials = true;
+                        }
                     }
                 }
 
@@ -123,13 +172,6 @@ namespace Lightstreamer.DotNet.Client.Demo
                 }
             }
 
-            SimpleTableInfo tableInfo = new ExtendedTableInfo(
-            items, "MERGE", fields, true);
-            tableInfo.DataAdapter = "QUOTE_ADAPTER";
-
-            tableKey = client.SubscribeTable(tableInfo,
-                new StocklistHandyTableListener(listener), false);
-            
         }
     }
 
