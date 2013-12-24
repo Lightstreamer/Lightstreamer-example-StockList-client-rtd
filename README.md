@@ -1,5 +1,5 @@
 # Lightstreamer - Basic Stock-List Demo - Excel (RTD) Client #
-<!-- START DESCRIPTION Basic Stock-List Demo -->
+<!-- START DESCRIPTION lightstreamer-example-stocklist-client-rtd -->
 
 This project includes a demo client showing integration between Lightstreamer .NET/C# Client and RTD Server for Excel.
 
@@ -28,7 +28,7 @@ Check out the sources for further explanations.
 
 <i>NOTE: not all the functionalities of the Lightstreamer .NET/C# Client & Local RTD Server for Excel demo are exposed by the classes listed above. You can easily expand those functionalities using the .NET/C# Client API as a reference: [http://www.lightstreamer.com/docs/client_dotnet_api/frames.html](http://www.lightstreamer.com/docs/client_dotnet_api/frames.html).</i>
 
-<!-- END DESCRIPTION Basic Stock-List Demo -->
+<!-- END DESCRIPTION lightstreamer-example-stocklist-client-rtd -->
 
 # Build #
 
