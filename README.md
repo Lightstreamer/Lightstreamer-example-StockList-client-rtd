@@ -6,7 +6,7 @@ This project includes a demo client showing integration between Lightstreamer .N
 <table>
   <tr>
     <td style="text-align: left">
-      &nbsp;<a href="http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi" target="_blank"><img src="screen_rtd_new.png"></a>&nbsp;
+      &nbsp;<a href="http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi" target="_blank"><img src="screen_rtd.png"></a>&nbsp;
       
     </td>
     <td>
