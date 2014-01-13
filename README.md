@@ -1,25 +1,15 @@
 # Lightstreamer - Basic Stock-List Demo - Excel (RTD) Client #
 <!-- START DESCRIPTION lightstreamer-example-stocklist-client-rtd -->
 
-This project includes a demo client showing integration between Lightstreamer .NET/C# Client and RTD Server for Excel.
+This project includes a demo client showing integration between [.NET client API for Lightstreamer](http://www.lightstreamer.com/docs/client_dotnet_api/frames.html) and RTD Server for Excel.
 
-<table>
-  <tr>
-    <td style="text-align: left">
-      &nbsp;<a href="http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi" target="_blank"><img src="screen_rtd.png"></a>&nbsp;
-      
-    </td>
-    <td>
-      &nbsp;Click here to download and install the application:<br>
-      &nbsp;<a href="http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi" target="_blank">http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi</a>
-    </td>
-  </tr>
-</table>
+[![screenshot](screen_rtd_new_large.png)](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi)<br>
+Click here to download and install the application: [http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi)
 
 [Real-Time Data (RTD)](http://en.wikipedia.org/wiki/Microsoft_Excel#Using_external_data) is a technology introduced in Microsoft Excel starting from 2002, aimed at replacing DDE for updating spreadsheets in real time.<br>
 This demo is made up of a DLL library that acts as an RTD Server, which receives updates from Lightstreamer Server on one side and injects them into Excel on the other side. The library has been developed with C#.NET (full source code is provided, see below). It leverages the <b>.NET Client API for Lightstreamer</b> to subscribe to 30 stock items and the <b>Microsoft Office library</b> to set up the RTD server.
 
-## Dig the code ##
+## Dig the Code ##
 
 The main class is RtdServer, found in RtdServer.cs, which contains an implementation of the IRtdServer interface. The same class will load a Form showing information regarding lightstreamer updates coming in and Excel updates pushed out.
 LightstreamerClient.cs, StocklistConnectionListener.cs and StocklistHandyTableListener.cs contain classes used to interface to the Lightstreamer .NET Client library, as seen in the .NET StockListDemo project.
@@ -71,7 +61,7 @@ By default, this release points to our demo Lightstreamer server, so if you just
 
 # See Also #
 
-## Lightstreamer Adapters needed by this demo client ##
+## Lightstreamer Adapters Needed by These Demo Clients ##
 <!-- START RELATED_ENTRIES -->
 
 * [Lightstreamer - Stock-List Demo - Java Adapter](https://github.com/Weswit/Lightstreamer-example-Stocklist-adapter-java)
@@ -79,7 +69,7 @@ By default, this release points to our demo Lightstreamer server, so if you just
 
 <!-- END RELATED_ENTRIES -->
 
-## Similar demo clients that may interest you ##
+## Related Projects ##
 
 * [Lightstreamer - Stock-List Demos - HTML Clients](https://github.com/Weswit/Lightstreamer-example-Stocklist-client-javascript)
 * [Lightstreamer - Basic Stock-List Demo - jQuery (jqGrid) Client](https://github.com/Weswit/Lightstreamer-example-StockList-client-jquery)
