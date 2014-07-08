@@ -34,8 +34,9 @@ Check out the sources for further explanations.
 * Download the deploy.zip file that you can find in the [deploy release](https://github.com/Weswit/Lightstreamer-example-StockList-client-rtd/releases) of this project and extract the application installer (a ".msi" file).
 * Execute the downloaded file to install the application.
 * From the Start menu, go to the "Lightstreamer RTD Demo" folder, click the "Start Lightstreamer Excel RTD Server Demo" link. This will open Excel and automatically load the "ExcelDemo_local.xlsx" spreadsheet (which, by the way, is contained in "C:\Program Files (x86)\Lightstreamer .NET RTD Server Demo library for Excel\").
-* The spreadsheet will activate the Lightstreamer RTD library, which will open a control window, where you can see the data traffic.
-<br>
+* The spreadsheet will activate the Lightstreamer RTD library, which will open a control window, where you can see the data traffic.<br>
+
+
 In the Excel spreadsheet, you will see several cells changing in real time. If the update rate looks slow (that is, you don't see several updates in a second), it means that the RTD ThrottleInterval of Excel is set to a high value. In order to activare real-time dispatching, please follow these instructions:
 * In Excel, go to the Visual Basic Editor (by pressing ALT+F11 or clicking Visual Basic Editor from the Macro menu (Tools menu).
 * Open the Immediate window (press CTRL+G or click Immediate Window on the View menu).
