@@ -2,6 +2,7 @@
 <!-- START DESCRIPTION lightstreamer-example-stocklist-client-rtd -->
 
 This project includes a demo client showing integration between [.NET client API for Lightstreamer](http://www.lightstreamer.com/docs/client_dotnet_api/frames.html) and <b>RTD Server</b> for Excel.
+
 ## Live Demo
 
 [![screenshot](screen_rtd_new_large.png)](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi)<br>
@@ -28,6 +29,8 @@ Check out the sources for further explanations.
 
 ## Install
 
+If you want to install a version of this demo pointing to your local Lightstreamer Server, follow these steps:
+
 * Note that, as prerequisite, the [Lightstreamer - Stock- List Demo - Java Adapter](https://github.com/Weswit/Lightstreamer-example-Stocklist-adapter-java) has to be deployed on your local Lightstreamer Server instance. Please check out that project and follow the installation instructions provided with it.
 * Launch Lightstreamer Server.
 * You need Microsoft Excel 2007 or newer installed on your Windows PC.
@@ -36,7 +39,6 @@ Check out the sources for further explanations.
 * From the Start menu, go to the "Lightstreamer RTD Demo" folder, click the "Start Lightstreamer Excel RTD Server Demo" link. This will open Excel and automatically load the "ExcelDemo_local.xlsx" spreadsheet (which, by the way, is contained in "C:\Program Files (x86)\Lightstreamer .NET RTD Server Demo library for Excel\").
 * The spreadsheet will activate the Lightstreamer RTD library, which will open a control window, where you can see the data traffic.<br>
 
-
 In the Excel spreadsheet, you will see several cells changing in real time. If the update rate looks slow (that is, you don't see several updates in a second), it means that the RTD ThrottleInterval of Excel is set to a high value. In order to activare real-time dispatching, please follow these instructions:
 * In Excel, go to the Visual Basic Editor (by pressing ALT+F11 or clicking Visual Basic Editor from the Macro menu (Tools menu).
 * Open the Immediate window (press CTRL+G or click Immediate Window on the View menu).
@@ -44,7 +46,9 @@ In the Excel spreadsheet, you will see several cells changing in real time. If t
 
 ## Build
 
-Otherwise, in order to compile the project, a version of Excel implementing RTD features must be installed (usually Excel 2007, 2010+). For more information regarding the RTD technology please visit this [page](http://social.msdn.microsoft.com/Search/en-us?query=RTD).
+To build your own version of the demo, instead of using the one provided in the deploy.zip file from the Install section above, follow these steps.
+
+In order to compile the project, a version of Excel implementing RTD features must be installed (usually Excel 2007, 2010+). For more information regarding the RTD technology please visit this [page](http://social.msdn.microsoft.com/Search/en-us?query=RTD).
 For more information regarding Visual C# 2010 Express and how to run it, please go to: [http://www.microsoft.com/express/Downloads/#2010-Visual-CS](http://www.microsoft.com/express/Downloads/#2010-Visual-CS).
   
 <i>NOTE: You may also use the sources included in this project with another Microsoft IDE or without any IDE but such approach is not covered in this readme.</i>
