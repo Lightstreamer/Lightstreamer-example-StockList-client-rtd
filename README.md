@@ -11,19 +11,19 @@ This project includes a demo client showing integration between [.NET client API
 
 ## Details
 
-[Real-Time Data (RTD)](http://en.wikipedia.org/wiki/Microsoft_Excel#Using_external_data) is a technology introduced in Microsoft Excel starting from 2002, aimed at replacing DDE for updating spreadsheets in real time.<br>
+[Real-Time Data (RTD)](http://en.wikipedia.org/wiki/Microsoft_Excel#Using_external_data) is a technology introduced in Microsoft Excel starting from 2002, aimed at replacing DDE for updating spreadsheets in real-time.<br>
 This demo is made up of a DLL library that acts as an RTD Server, which receives updates from Lightstreamer Server on one side and injects them into Excel on the other side. The library has been developed with C#.NET (full source code is provided, see below). It leverages the <b>.NET Client API for Lightstreamer</b> to subscribe to 30 stock items and the <b>Microsoft Office library</b> to set up the RTD server.
 
-The control windows shows a counter with the updates received from Lightstreamer Server and logs such updates in real time. Is also shows the notifications issued towards Excel. To pause the notification calls, uncheck "Data stream to Excel".
+The control windows shows a counter with the updates received from Lightstreamer Server and logs such updates in real-time. Is also shows the notifications issued toward Excel. To pause the notification calls, uncheck "Data stream to Excel".
 
 ### Dig the Code
 
-The main class is RtdServer, found in RtdServer.cs, which contains an implementation of the IRtdServer interface. The same class will load a Form showing information regarding lightstreamer updates coming in and Excel updates pushed out.
-LightstreamerClient.cs, StocklistConnectionListener.cs and StocklistHandyTableListener.cs contain classes used to interface to the Lightstreamer .NET Client library, as seen in the .NET StockListDemo project.
+The main class is RtdServer, found in RtdServer.cs, which contains an implementation of the IRtdServer interface. The same class will load a Form showing information regarding Lightstreamer updates coming in and Excel updates pushed out.
+LightstreamerClient.cs, StocklistConnectionListener.cs, and StocklistHandyTableListener.cs contain classes used to interface to the Lightstreamer .NET Client library, as seen in the .NET StockListDemo project.
   
 Check out the sources for further explanations.
 
-<i>NOTE: not all the functionalities of the Lightstreamer .NET/C# Client & Local RTD Server for Excel demo are exposed by the classes listed above. You can easily expand those functionalities using the .NET/C# Client API as a reference: [http://www.lightstreamer.com/docs/client_dotnet_api/frames.html](http://www.lightstreamer.com/docs/client_dotnet_api/frames.html).</i>
+<i>NOTE: Not all the functionalities of the Lightstreamer .NET/C# Client & Local RTD Server for Excel demo are exposed by the classes listed above. You can easily expand those functionalities using the .NET/C# Client API as a reference: [http://www.lightstreamer.com/docs/client_dotnet_api/frames.html](http://www.lightstreamer.com/docs/client_dotnet_api/frames.html).</i>
 
 <!-- END DESCRIPTION lightstreamer-example-stocklist-client-rtd -->
 
@@ -36,36 +36,36 @@ If you want to install a version of this demo pointing to your local Lightstream
 * You need Microsoft Excel 2007 or newer installed on your Windows PC.
 * Download the `deploy.zip` file that you can find in the [deploy release](https://github.com/Weswit/Lightstreamer-example-StockList-client-rtd/releases) of this project and extract the application installer (a `.msi` file).
 * Execute the downloaded file to install the application.
-* From the Start menu, go to the `Lightstreamer RTD Demo` folder, click the "Start Lightstreamer Excel RTD Server Demo" link. This will open Excel and automatically load the `ExcelDemo_local.xlsx` spreadsheet (which, by the way, is contained in `C:\Program Files (x86)\Lightstreamer .NET RTD Server Demo library for Excel\`).
+* From the Start menu, go to the `Lightstreamer RTD Demo` folder, and click the "Start Lightstreamer Excel RTD Server Demo" link. This will open Excel and automatically load the `ExcelDemo_local.xlsx` spreadsheet (which, by the way, is contained in `C:\Program Files (x86)\Lightstreamer .NET RTD Server Demo library for Excel\`).
 * The spreadsheet will activate the Lightstreamer RTD library, which will open a control window, where you can see the data traffic.<br>
 
-In the Excel spreadsheet, you will see several cells changing in real time. If the update rate looks slow (that is, you don't see several updates in a second), it means that the RTD ThrottleInterval of Excel is set to a high value. In order to activare real-time dispatching, please follow these instructions:
+In the Excel spreadsheet, you will see several cells changing in real-time. If the update rate looks slow (that is, you don't see several updates in a second), it means that the RTD ThrottleInterval of Excel is set to a high value. To activate real-time dispatching, please follow these instructions:
 * In Excel, go to the Visual Basic Editor (by pressing *ALT+F11* or clicking Visual Basic Editor from the Macro menu (Tools menu).
 * Open the Immediate window (press *CTRL+G* or click Immediate Window on the View menu).
 * In the Immediate window type this code and press ENTER: *Application.RTD.ThrottleInterval = 0*.
 
 ## Build
 
-To build your own version of the demo, instead of using the one provided in the `deploy.zip` file from the Install section above, follow these steps.
+To build your own version of the demo, instead of using the one provided in the `deploy.zip` file from the Install section above, follow these steps:
 
-In order to compile the project, a version of Excel implementing RTD features must be installed (usually Excel 2007, 2010+). For more information regarding the RTD technology please visit this [page](http://social.msdn.microsoft.com/Search/en-us?query=RTD).
+To compile the project, a version of Excel implementing RTD features must be installed (usually Excel 2007, 2010+). For more information regarding the RTD technology, please visit this [page](http://social.msdn.microsoft.com/Search/en-us?query=RTD).
 For more information regarding Visual C# 2010 Express and how to run it, please go to: [http://www.microsoft.com/express/Downloads/#2010-Visual-CS](http://www.microsoft.com/express/Downloads/#2010-Visual-CS).
   
-<i>NOTE: You may also use the sources included in this project with another Microsoft IDE or without any IDE but such approach is not covered in this readme.</i>
+<i>NOTE: You may also use the sources included in this project with another Microsoft IDE or without any IDE but such an approach is not covered in this readme.</i>
 
-You just need to create a Visual Studio project for a Class library (DLL) target, then include the sources and properties files and include references to the Microsoft.Office.Interop.Excel and *Lightstreamer.NET Client API* (binaries files `DotNetClient_N2.dll` and `DotNetClient_N2.pdb` that are located under the `/DOCS-SDKs/sdk_client_dotnet/lib` folder of Lightstreamer server installation) from the [latest Lightstreamer distribution](http://www.lightstreamer.com/download). After the compilation of your DLL, you need to run `RegAsm.exe` tool in order to register it against COM. `RegAsm.exe` is part of the .NET SDK and just generates some Registry entries, like the ones in the example `RTDServiceRegistrationExample.reg` file.
+You just need to create a Visual Studio project for a Class library (DLL) target, then include the sources and properties files and include references to the Microsoft.Office.Interop.Excel and *Lightstreamer.NET Client API* (binaries files `DotNetClient_N2.dll` and `DotNetClient_N2.pdb`, which are located under the `/DOCS-SDKs/sdk_client_dotnet/lib` folder of Lightstreamer server installation) from the [latest Lightstreamer distribution](http://www.lightstreamer.com/download). After the compilation of your DLL, you need to run `RegAsm.exe` tool to register it against COM. `RegAsm.exe` is part of the .NET SDK and just generates some Registry entries, like the ones in the example `RTDServiceRegistrationExample.reg` file.
 
 ### Run
 Once `RTDLibraryExcelDemo.dll` is registered, `ExcelDemo.xlsx` has to be opened.
-If the registration went successful, Excel will load `RTDLibraryExcelDemo.dll`, a status window will appear and real-time data will start to be delivered to it. A quick and easy way to avoid dealing with Registry entries is to install the shipped version of the library with the downloadable [RTDLibraryExcelDemoSetup.msi](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi), then just
-compile your own `.dll` replacing the one installed.
+If the registration was successful, Excel will load `RTDLibraryExcelDemo.dll`, a status window will appear, and real-time data will start to be delivered to it. A quick and easy way to avoid dealing with Registry entries is to install the shipped version of the library with the downloadable [RTDLibraryExcelDemoSetup.msi](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi), then just
+compile your own `.dll`, replacing the one installed.
 
 ### Deploy
   
 Please note that the RTD technology works on top of <b>DCOM</b>, this means that you could even deploy a centralized remote RTD Server that can be used across your network. In the case of this demo, both RTD Server and Excel will run on the same local computer.
 Internet connection is required to make the RTD Server, controlling a Lightstreamer connection, being able to deliver real-time data to Excel.<br>
 
-Obviously you could test the application against your Lightstreamer server installed somewhere, but in this case, you have to change the paramters of RTD function in `A1` cell of the Excel sheet, please note the forth and fifth parameters:
+Obviously, you could test the application against your Lightstreamer server installed somewhere, but in this case, you have to change the paramters of RTD function in `A1` cell of the Excel sheet; please note the fourth and fifth parameters:
 
 ```
 =RTD("lightstreamer.rtdexceldemo";;"CONFIG";"http://push.lightstreamer.com";"80";"DEMO";"QUOTE_ADAPTER")
