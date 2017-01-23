@@ -104,7 +104,7 @@ namespace Lightstreamer.DotNet.Client.Demo
         {
             ConnectionInfo connInfo = new ConnectionInfo();
 
-            flowForm.AppendLightstreamerLog("Start connecting to push server... ");
+            flowForm.AppendLightstreamerLog("Start connecting to push server ... ");
 
             //this method will not exit until the openConnection returns without throwing an exception
             while (!connected)

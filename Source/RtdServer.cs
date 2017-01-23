@@ -532,7 +532,7 @@ namespace Lightstreamer.DotNet.Client.Demo
                                 }
                             }
                         }
-                    } catch (ArgumentException ae) 
+                    } catch (ArgumentException) 
                     {
                         // Skip ... 
                     }

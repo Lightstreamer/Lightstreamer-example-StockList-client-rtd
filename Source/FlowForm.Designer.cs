@@ -85,6 +85,7 @@ namespace Lightstreamer.DotNet.Client.Demo
             // 
             this.lblStatus.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.lblStatus, 2);
+            this.lblStatus.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblStatus.Location = new System.Drawing.Point(3, 40);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(162, 13);

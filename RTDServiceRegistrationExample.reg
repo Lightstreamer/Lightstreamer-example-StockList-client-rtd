@@ -15,13 +15,13 @@ REGEDIT4
 "Class"="Lightstreamer.DotNet.Client.Demo.RtdServer"
 "Assembly"="RTDLibraryExcelDemo, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 "RuntimeVersion"="v4.0.30319"
-"CodeBase"="file:///C:/Documents and Settings/Fabio/Desktop/Release/RTDLibraryExcelDemo.dll"
+"CodeBase"="file:///C:/lightstreamer/Dev/projects_GitHub/example-StockList-client-rtd/bin/Release/RTDLibraryExcelDemo.dll"
 
 [HKEY_CLASSES_ROOT\CLSID\{2368E0E6-1ED6-3C39-8FAE-45B4A9FB53F3}\InprocServer32\1.0.0.0]
 "Class"="Lightstreamer.DotNet.Client.Demo.RtdServer"
 "Assembly"="RTDLibraryExcelDemo, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 "RuntimeVersion"="v4.0.30319"
-"CodeBase"="file:///C:/Documents and Settings/Fabio/Desktop/Release/RTDLibraryExcelDemo.dll"
+"CodeBase"="file:///C:/lightstreamer/Dev/projects_GitHub/example-StockList-client-rtd/bin/Release/RTDLibraryExcelDemo.dll"
 
 [HKEY_CLASSES_ROOT\CLSID\{2368E0E6-1ED6-3C39-8FAE-45B4A9FB53F3}\ProgId]
 @="Lightstreamer.RtdExcelDemo"

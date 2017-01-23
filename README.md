@@ -1,7 +1,7 @@
 # Lightstreamer - Basic Stock-List Demo - Excel (RTD) Client
 <!-- START DESCRIPTION lightstreamer-example-stocklist-client-rtd -->
 
-This project includes a demo client showing integration between [.NET client API for Lightstreamer](http://www.lightstreamer.com/docs/client_dotnet_api/frames.html) and <b>RTD Server</b> for Excel.
+This project includes a demo client showing integration between [.NET PCL client API for Lightstreamer](http://www.lightstreamer.com/api/ls-pcl-client/latest/) and <b>RTD Server</b> for Excel.
 
 ## Live Demo
 
@@ -12,14 +12,14 @@ This project includes a demo client showing integration between [.NET client API
 ## Details
 
 [Real-Time Data (RTD)](http://en.wikipedia.org/wiki/Microsoft_Excel#Using_external_data) is a technology introduced in Microsoft Excel starting from 2002, aimed at replacing DDE for updating spreadsheets in real-time.<br>
-This demo is made up of a DLL library that acts as an RTD Server, which receives updates from Lightstreamer Server on one side and injects them into Excel on the other side. The library has been developed with C#.NET (full source code is provided, see below). It leverages the <b>.NET Client API for Lightstreamer</b> to subscribe to 30 stock items and the <b>Microsoft Office library</b> to set up the RTD server.
+This demo is made up of a DLL library that acts as an RTD Server, which receives updates from Lightstreamer Server on one side and injects them into Excel on the other side. The library has been developed with C#.NET (full source code is provided, see below). It leverages the <b>.NET PCL Client API for Lightstreamer</b> to subscribe to 30 stock items and the <b>Microsoft Office library</b> to set up the RTD server.
 
 The control windows shows a counter with the updates received from Lightstreamer Server and logs such updates in real-time. Is also shows the notifications issued toward Excel. To pause the notification calls, uncheck "Data stream to Excel".
 
 ### Dig the Code
 
 The main class is RtdServer, found in RtdServer.cs, which contains an implementation of the IRtdServer interface. The same class will load a Form showing information regarding Lightstreamer updates coming in and Excel updates pushed out.
-LightstreamerClient.cs, StocklistConnectionListener.cs, and StocklistHandyTableListener.cs contain classes used to interface to the Lightstreamer .NET Client library, as seen in the .NET StockListDemo project.
+LightstreamerClient.cs, StocklistConnectionListener.cs, and StocklistHandyTableListener.cs contain classes used to interface to the Lightstreamer .NET PCL Client library, as seen in the .NET StockListDemo project.
   
 Check out the sources for further explanations.
 
@@ -53,7 +53,9 @@ For more information regarding Visual C# 2010 Express and how to run it, please 
   
 <i>NOTE: You may also use the sources included in this project with another Microsoft IDE or without any IDE but such an approach is not covered in this readme.</i>
 
-You just need to create a Visual Studio project for a Class library (DLL) target, then include the sources and properties files and include references to the Microsoft.Office.Interop.Excel and *Lightstreamer.NET Client API* (binaries files `DotNetClient_N2.dll` and `DotNetClient_N2.pdb`, which are located under the `/DOCS-SDKs/sdk_client_dotnet/lib` folder of Lightstreamer server installation) from the [latest Lightstreamer distribution](http://www.lightstreamer.com/download). After the compilation of your DLL, you need to run `RegAsm.exe` tool to register it against COM. `RegAsm.exe` is part of the .NET SDK and just generates some Registry entries, like the ones in the example `RTDServiceRegistrationExample.reg` file.
+You just need to create a Visual Studio project for a Class library (DLL) target, then include the sources and properties files and include references to the Microsoft.Office.Interop.Excel and 
+*Lightstreamer.NET PCL Client API* (get the  binaries files binaries files of the library `Lightstreamer_DotNet_PCL_Client.dll` and `Lightstreamer_DotNet_PCL_Client.pdb` from NuGet [Lightstreamer.DotNet.Client](https://www.nuget.org/packages/Lightstreamer.DotNet.Client/) or use directly the Package Manager Console `Install-Package Lightstreamer.DotNet.Client`).
+After the compilation of your DLL, you need to run `RegAsm.exe` tool to register it against COM. `RegAsm.exe` is part of the .NET SDK and just generates some Registry entries, like the ones in the example `RTDServiceRegistrationExample.reg` file.
 
 ### Run
 Once `RTDLibraryExcelDemo.dll` is registered, `ExcelDemo.xlsx` has to be opened.
@@ -91,5 +93,5 @@ Obviously, you could test the application against your Lightstreamer server inst
 
 ## Lightstreamer Compatibility Notes #
 
-* Compatible with Lightstreamer .NET Client Library version 2.1 or newer.
+* Compatible with Lightstreamer .NET PCL Client Library version 3.0.0 or newer.
 * For Lightstreamer Allegro (+ .NET Client API support), Presto, Vivace.
