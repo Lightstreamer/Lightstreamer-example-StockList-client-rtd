@@ -23,7 +23,7 @@ LightstreamerClient.cs, StocklistConnectionListener.cs, and StocklistHandyTableL
   
 Check out the sources for further explanations.
 
-<i>NOTE: Not all the functionalities of the Lightstreamer .NET/C# Client & Local RTD Server for Excel demo are exposed by the classes listed above. You can easily expand those functionalities using the .NET/C# Client API as a reference: [http://www.lightstreamer.com/docs/client_dotnet_api/frames.html](http://www.lightstreamer.com/docs/client_dotnet_api/frames.html).</i>
+<i>NOTE: Not all the functionalities of the Lightstreamer .NET/C# Client & Local RTD Server for Excel demo are exposed by the classes listed above. You can easily expand those functionalities using the PCL/C# Client API as a reference: [http://www.lightstreamer.com/api/ls-pcl-client/latest/](http://www.lightstreamer.com/api/ls-pcl-client/latest/).</i>
 
 <!-- END DESCRIPTION lightstreamer-example-stocklist-client-rtd -->
 
