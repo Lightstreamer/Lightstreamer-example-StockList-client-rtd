@@ -6,7 +6,7 @@ This project includes a demo client showing integration between [.NET PCL client
 ## Live Demo
 
 [![screenshot](screen_rtd_new_large.png)](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi)<br>
-###[![](http://demos.lightstreamer.com/site/img/play.png) View live demo](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi)<br>
+### [![](http://demos.lightstreamer.com/site/img/play.png) View live demo](http://demos.lightstreamer.com/DotNet_RTDDemo/RTDLibraryExcelDemoSetup.msi)<br>
 (download RTDLibraryExcelDemoSetup.msi; launch it; follow the instructions)
 
 ## Details
