@@ -94,4 +94,4 @@ Obviously, you could test the application against your Lightstreamer server inst
 ## Lightstreamer Compatibility Notes #
 
 * Compatible with Lightstreamer .NET PCL Client Library version 3.0.0 or newer.
-* For Lightstreamer Allegro (+ .NET Client API support), Presto, Vivace.
+* Ensure that .NET PCL Client API is supported by Lightstreamer Server license configuration.
