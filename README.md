@@ -48,10 +48,10 @@ And return the current status of the connection with the Lightstreamer server.
 
 The 'OPTIONS' value is a special case that once received by the RTDServer leverages some specific tuning for Lightstreamer.
 Currently it is possible to configure:
- - the max frequency for each subscriptions, `max_frequency`:
+ - the max frequency for each subscriptions, `max_frequency`: [Subscription.RequestedMaxFrequency](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.Subscription.html#com_lightstreamer_client_Subscription_RequestedMaxFrequency)
  - the transport for the comunication with the Lightstreamer server, `forced_transport`: [ConnectionOptions.ForcedTransport](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_ForcedTransport)
- - the stalled timeout, 'stalled_timeout`:
- - a proxy, `proxy`: []()
+ - the stalled timeout, `stalled_timeout`: [ConnectionOptions.StalledTimeout](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_StalledTimeout)
+ - a proxy, `proxy`: [ConnectionOptions.Proxy](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_Proxy)
 
 Instead, regarding the cells in the demo with stock market tickers, the formula is as follows:
 
@@ -59,7 +59,7 @@ Instead, regarding the cells in the demo with stock market tickers, the formula 
 =rtd("lightstreamer.rtdnew23",,"item1","stock_name")
 ```
 
-where topic1 and topic2 are respectively the name of the Item and the field we want to display in the cell.
+where Topic1 and Topic2 are respectively the name of the Item and the field we want to display in the cell.
 
 LSConnect.cs, StocklistConnectionListener.cs, and StocklistSubListener.cs contain classes used to interface to the Lightstreamer .NET Standard Client library.
 
