@@ -142,7 +142,7 @@ namespace TestRTD
             
             var config = new NLog.Config.LoggingConfiguration();
 
-            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "C:\\Users\\wgius\\TestRTD.log" };
+            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "TestRTD.log" };
 
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 
@@ -155,6 +155,7 @@ namespace TestRTD
             // setup Lightstreamer Client instance
             lsClient = new LSConnect(this);
 
+            // temporary assignement
             pushServerUrl = "http://localhost:8080";
 
         }
@@ -211,6 +212,19 @@ namespace TestRTD
                     if (ls_parameter.Equals("forced_transport"))
                     {
                         lsClient.setForcedTransport(param_value);
+                    }
+
+                    if (ls_parameter.Equals("stalled_timeout"))
+                    {
+                        lsClient.setStalledTimeout(param_value);
+                    }
+
+                    if (ls_parameter.Equals("proxy"))
+                    {
+                        string param_value2 = (string)Strings.GetValue(2);
+                        string param_value3 = (string)Strings.GetValue(2);
+
+                        lsClient.setProxy(param_value, param_value2, param_value3);
                     }
 
                     return "";

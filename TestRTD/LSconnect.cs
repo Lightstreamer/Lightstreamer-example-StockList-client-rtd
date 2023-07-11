@@ -3,6 +3,7 @@
     using com.lightstreamer.client;
     using NLog;
     using System;
+    using System.Runtime.CompilerServices;
     using System.Threading;
 
     // This is the class handling the Lightstreamer Client,
@@ -173,6 +174,25 @@
         internal void setForcedTransport(string param_value)
         {
             client.connectionOptions.ForcedTransport = param_value;
+        }
+
+        internal void setStalledTimeout(string param_value)
+        {
+            long li;
+
+            if ( long.TryParse(param_value, out li) ) { 
+                client.connectionOptions.StalledTimeout = li;
+            }
+        }
+
+        internal void setProxy(string param_value1, string param_value2, string param_value3)
+        {
+            int ii;
+
+            if ( int.TryParse(param_value3, out ii))
+            {
+                client.connectionOptions.Proxy = new Proxy(param_value1, param_value2, ii);
+            }
         }
     }
 }
