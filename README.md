@@ -6,6 +6,8 @@ This project includes a demo client showing integration between [.NET Standard c
 ## Live Demo
 
 ![screenshot](screen_rtd_new_large.png)<br>
+[![](http://demos.lightstreamer.com/site/img/play.png) View live demo](http://demos.lightstreamer.com/DotNet_RTDDemo/deploy.zip)<br>
+(download deploy.zip; extract it; follow the readme)
 
 ## Details
 
