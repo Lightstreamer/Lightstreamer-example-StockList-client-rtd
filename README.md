@@ -79,7 +79,7 @@ If you want to install a version of this demo pointing to your local Lightstream
 	 - You need Microsoft Excel 2007 or newer installed on your Windows system.
 	 - You need [.NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) installed on your Windows system.
  - launch Lightstreamer Server.
- - Download the deploy.zip file that you can find in the deploy release of this project and extract the `TestRTD` folder.
+ - Download the deploy.zip file that you can find in the latest release of this project and extract the `TestRTD` folder.
  - Execute the `ExcelDemoLauncher.bat` command bat from the `net7.0` or `net7.0-x64` folder depending your Excel is 32 or 64 bit.
 	- Since a dll registration is involved the batch file should be launched with administrator privileges.
  - The spreadsheet will activate the Lightstreamer RTD library, and several cells will start changing in real-time.
