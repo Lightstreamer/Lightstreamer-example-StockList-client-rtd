@@ -6,7 +6,7 @@ This project includes a demo client showing integration between [.NET Standard c
 ## Live Demo
 
 ![screenshot](screen_rtd_new_large.png)<br>
-[![](http://demos.lightstreamer.com/site/img/play.png) View live demo](http://demos.lightstreamer.com/DotNet_RTDDemo/deploy.zip)<br>
+[![](http://demos.lightstreamer.com/site/img/play.png) View live demo](https://demos.lightstreamer.com/DotNet_RTDDemo/deploy.zip)<br>
 (download deploy.zip; extract it; follow the readme)
 
 ## Details
@@ -18,7 +18,7 @@ It leverages the <b>.NET Standard Client API for Lightstreamer</b> to subscribe 
 
 ### Dig the Code
 
-The main class is RtdServer, found in RtdServer.cs, which contains an implementation of the IRtdServer interface that serves as a bridge for communication between Excel and the Lightstreamer server.
+The main class is RtdServer, found in [RtdServer.cs](https://github.com/Lightstreamer/Lightstreamer-example-StockList-client-rtd/blob/master/TestRTD/RtdServer.cs), which contains an implementation of the IRtdServer interface that serves as a bridge for communication between Excel and the Lightstreamer server.
 
 The RTD function (https://learn.microsoft.com/en-us/office/troubleshoot/excel/set-up-realtimedata-function) uses the following syntax
 
@@ -27,9 +27,9 @@ The RTD function (https://learn.microsoft.com/en-us/office/troubleshoot/excel/se
 ```
 
 So, the first parameter is the identifier of the RTD server installed on the local system who will provide the data.
-It is registered in the C# code of for this demo is defined as: <i>lightstreamer.rtdnew23</i> []()  
-The ServerName paramter is not used by the demo and the following parameters are a free list of values called topics which should represent the value required by the excel sheet to valorise the cells.
-In the demo the first topic of the list is used as selector. 
+It is registered in the C# code and for this demo is defined as: <i>lightstreamer.rtdnew23</i> []()  
+The ServerName parameter  is not used by the demo and the following parameters are a free list of values called topics which should represent the value required by the excel sheet to valorise the cells.
+In the demo the first topic of the list is used as a selector. 
 
 The 'CONFIG' value is a special case that once received by the RTDServer triggers the connection to the Lightstreamer server.
 Please look at A1 cell in the Excel sheet:
@@ -51,7 +51,7 @@ And return the current status of the connection with the Lightstreamer server.
 The 'OPTIONS' value is a special case that once received by the RTDServer leverages some specific tuning for Lightstreamer.
 Currently it is possible to configure:
  - the max frequency for each subscriptions, `max_frequency`: [Subscription.RequestedMaxFrequency](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.Subscription.html#com_lightstreamer_client_Subscription_RequestedMaxFrequency)
- - the transport for the comunication with the Lightstreamer server, `forced_transport`: [ConnectionOptions.ForcedTransport](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_ForcedTransport)
+ - the transport for the communication  with the Lightstreamer server, `forced_transport`: [ConnectionOptions.ForcedTransport](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_ForcedTransport)
  - the stalled timeout, `stalled_timeout`: [ConnectionOptions.StalledTimeout](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_StalledTimeout)
  - a proxy, `proxy`: [ConnectionOptions.Proxy](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_Proxy)
 
@@ -61,7 +61,9 @@ Instead, regarding the cells in the demo with stock market tickers, the formula 
 =rtd("lightstreamer.rtdnew23",,"item1","stock_name")
 ```
 
-where Topic1 and Topic2 are respectively the name of the Item and the field we want to display in the cell.
+where Topic1 and Topic2 are respectively the name of the Item and the field we want to display in the cell and therefore, they must be subscribed through the client session of Lightstreamer.
+
+Once all the items and fields required by the Excel sheet are subscribed and their subscriptions are submitted, the demo will start receiving real-time updates from the Lightstreamer server. These updates are collected in a temporary data structure and are dequeued whenever the [RefreshData](https://github.com/Lightstreamer/Lightstreamer-example-StockList-client-rtd/blob/ab9c1ba08f6ea0181a1aeb15f24d15cd3ed92c14/TestRTD/RtdServer.cs#L348C22-L348C33) function is called.
 
 LSConnect.cs, StocklistConnectionListener.cs, and StocklistSubListener.cs contain classes used to interface to the Lightstreamer .NET Standard Client library.
 
@@ -80,7 +82,7 @@ If you want to install a version of this demo pointing to your local Lightstream
 	 - You need a Lightstreamer server installed locally, [download](https://lightstreamer.com/download/).
 	 - You need Microsoft Excel 2007 or newer installed on your Windows system.
 	 - You need [.NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) installed on your Windows system.
- - launch Lightstreamer Server.
+ - Launch Lightstreamer Server.
  - Download the deploy.zip file that you can find in the latest release of this project and extract the `TestRTD` folder.
  - Execute the `ExcelDemoLauncher.bat` command bat from the `net7.0` or `net7.0-x64` folder depending your Excel is 32 or 64 bit.
 	- Since a dll registration is involved the batch file should be launched with administrator privileges.
