@@ -55,6 +55,8 @@ Currently it is possible to configure:
  - the stalled timeout, `stalled_timeout`: [ConnectionOptions.StalledTimeout](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_StalledTimeout)
  - a proxy, `proxy`: [ConnectionOptions.Proxy](https://sdk.lightstreamer.com/ls-dotnetstandard-client/6.0.0/api/api/com.lightstreamer.client.ConnectionOptions.html#com_lightstreamer_client_ConnectionOptions_Proxy)
 
+Double check the cells of column A (A2, A3, A7) for some examples of configurations.
+
 Instead, regarding the cells in the demo with stock market tickers, the formula is as follows:
 
 ```
