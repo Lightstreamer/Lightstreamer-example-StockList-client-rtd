@@ -152,8 +152,11 @@ namespace TestRTD
 
             log.Info("RtdServer - " + RTD_PROG_ID + " - ");
 
+            LightstreamerClient.setLoggerProvider(new NLgWrapper());
+
             // setup Lightstreamer Client instance
             lsClient = new LSConnect(this);
+
 
             // temporary assignement
             pushServerUrl = "http://localhost:8080";
