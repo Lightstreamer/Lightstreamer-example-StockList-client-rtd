@@ -117,6 +117,8 @@ Obviously, you could test the application against your Lightstreamer server inst
 
 ## See Also
 
+* Our blog post: [Real-Time Data Made Easy: Empowering Excel with Lightstreamer and RTD Integration](https://blog.lightstreamer.com/2023/08/real-time-data-made-easy-empowering.html)
+
 ### Lightstreamer Adapters Needed by These Demo Clients
 <!-- START RELATED_ENTRIES -->
 
